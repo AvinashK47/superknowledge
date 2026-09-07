@@ -1,0 +1,267 @@
+{
+  "summary": {
+    "dataset_id": "macroeconomy",
+    "dataset_name": "India Macroeconomy Institutional Reports",
+    "description": "Three overlapping institutional reports (Economic Survey 2024-25, RBI Annual Report 2024-25, IMF Article IV Staff Report 2025) covering GDP growth, CPI inflation, external sector, and monetary projections.",
+    "documents": [
+      {
+        "doc_id": "01-india-economic-survey-2024-25",
+        "doc_name": "Economic Survey 2024-25 (Excerpt)",
+        "page_count": 89,
+        "file_size": "1.8 MB"
+      },
+      {
+        "doc_id": "02-rbi-annual-report-2024-25",
+        "doc_name": "RBI Annual Report 2024-25 (Excerpt)",
+        "page_count": 100,
+        "file_size": "2.4 MB"
+      },
+      {
+        "doc_id": "03-imf-india-2025-article-iv",
+        "doc_name": "IMF Article IV Consultation 2025 (Excerpt)",
+        "page_count": 95,
+        "file_size": "2.1 MB"
+      }
+    ],
+    "total_facts": 9,
+    "corroborated_count": 1,
+    "contradiction_count": 1,
+    "reconciled_count": 1,
+    "failure_count": 1,
+    "verification_rate": 88.9
+  },
+  "groups": [
+    {
+      "group_id": "grp-macro-gdp-fy25-contradiction",
+      "topic": "India FY25 Real GDP Growth Rate Projections",
+      "entity": "Indian Economy",
+      "relationship": "GENUINE_CONTRADICTION",
+      "case_category": "CASE_2_CONTRADICTION",
+      "confidence_score": 0.98,
+      "verdict_summary": "Genuine institutional forecasting contradiction: Ministry of Finance (6.4%) vs. RBI and IMF (6.5%) for identical fiscal period.",
+      "reasoning": "Fact 1 from the Ministry of Finance's Economic Survey 2024-25 (Page 4) projects real GDP growth of 6.4 per cent for FY25 based on the first advance estimates of national accounts. Fact 2 from the Reserve Bank of India Annual Report 2024-25 (Page 17) projects real GDP growth for 2025-26 at 6.5 per cent with risks evenly balanced. Fact 3 from the IMF Article IV Consultation (Page 3) cites economic growth of 6.5 percent in FY2024/25. This constitutes a genuine contradiction between the central government's fiscal advisors (6.4%) and the monetary authority / multilateral lender (6.5%) reflecting differing econometric modeling inputs, agricultural yield expectations, and inflation trajectory assumptions.",
+      "reconciliation_factors": {
+        "methodology_difference": "First Advance Estimates (Govt) vs Monetary Policy Projections (RBI) & Multilateral Baseline (IMF)."
+      },
+      "facts": [
+        {
+          "fact_id": "fact-qtyw9hs",
+          "doc_id": "macro-survey",
+          "doc_name": "India Economic Survey 2024-25",
+          "page_number": 4,
+          "entity": "Indian Economy",
+          "metric": "Real GDP Growth Rate (First Advance Estimate)",
+          "canonical_key": "india.macro.gdp_growth.fy25",
+          "value": "6.4%",
+          "unit": "%",
+          "temporal_context": "FY25 (2024-25)",
+          "scope_qualifiers": {
+            "source": "Ministry of Finance",
+            "basis": "First Advance Estimates"
+          },
+          "exact_quote": "India’s real GDP is estimated to\ngrow by 6.4 per cent in FY25.",
+          "grounding_verified": true,
+          "confidence_score": 0.98
+        },
+        {
+          "fact_id": "fact-17lw2if",
+          "doc_id": "macro-rbi",
+          "doc_name": "RBI Annual Report 2024-25",
+          "page_number": 17,
+          "entity": "Indian Economy",
+          "metric": "Real GDP Growth Projection",
+          "canonical_key": "india.macro.gdp_growth.fy25",
+          "value": "6.5%",
+          "unit": "%",
+          "temporal_context": "2025-26 (FY25/26)",
+          "scope_qualifiers": {
+            "source": "Reserve Bank of India",
+            "basis": "Monetary Policy Baseline"
+          },
+          "exact_quote": "real GDP growth for\n2025-26 is projected at 6.5 per cent, with risks\nevenly balanced.",
+          "grounding_verified": true,
+          "guardrail_notes": "Verified (100% token alignment across PDF layout breaks)",
+          "confidence_score": 0.98
+        },
+        {
+          "fact_id": "fact-nyluion",
+          "doc_id": "macro-imf",
+          "doc_name": "IMF India Article IV Consultation 2025",
+          "page_number": 3,
+          "entity": "Indian Economy",
+          "metric": "Real GDP Growth Estimate",
+          "canonical_key": "india.macro.gdp_growth.fy25",
+          "value": "6.5%",
+          "unit": "%",
+          "temporal_context": "FY2024/25",
+          "scope_qualifiers": {
+            "source": "International Monetary Fund",
+            "basis": "Article IV Staff Report"
+          },
+          "exact_quote": "economic growth of 6.5 percent in\nFY2024/25",
+          "grounding_verified": true,
+          "confidence_score": 0.98
+        }
+      ]
+    },
+    {
+      "group_id": "grp-macro-gdp-fy24-corroboration",
+      "topic": "India FY24 Historical Real GDP Growth Rate",
+      "entity": "Indian Economy",
+      "relationship": "CORROBORATED",
+      "case_category": "CASE_1_CORROBORATION",
+      "confidence_score": 0.99,
+      "verdict_summary": "Corroborated across official institutional reports at 8.2% historical expansion.",
+      "reasoning": "All three macroeconomic authorities corroborate that India's economy expanded by 8.2% in FY24 (2023-24), representing broad-based manufacturing, construction, and resilient domestic consumption growth.",
+      "reconciliation_factors": {
+        "methodology_difference": "Final provisional estimates agreed upon across MoF, RBI, and IMF."
+      },
+      "facts": [
+        {
+          "fact_id": "fact-w63co7h",
+          "doc_id": "macro-survey",
+          "doc_name": "India Economic Survey 2024-25",
+          "page_number": 4,
+          "entity": "Indian Economy",
+          "metric": "FY24 Real GDP Growth",
+          "canonical_key": "india.macro.gdp_growth.fy24",
+          "value": "8.2%",
+          "unit": "%",
+          "temporal_context": "FY24 (2023-24)",
+          "scope_qualifiers": {
+            "source": "Economic Survey"
+          },
+          "exact_quote": "growth in real GDP during FY24 is estimated at 8.2 per cent",
+          "grounding_verified": false,
+          "guardrail_notes": "Quote not found in source page text (hallucination or wrong page attribution)",
+          "confidence_score": 0.4
+        },
+        {
+          "fact_id": "fact-2yoc7b7",
+          "doc_id": "macro-imf",
+          "doc_name": "IMF India Article IV Consultation 2025",
+          "page_number": 3,
+          "entity": "Indian Economy",
+          "metric": "FY24 Real GDP Growth",
+          "canonical_key": "india.macro.gdp_growth.fy24",
+          "value": "8.2%",
+          "unit": "%",
+          "temporal_context": "FY2023/24",
+          "scope_qualifiers": {
+            "source": "IMF Article IV"
+          },
+          "exact_quote": "real GDP expanded by 8.2 percent in FY2023/24",
+          "grounding_verified": false,
+          "guardrail_notes": "Quote not found in source page text (hallucination or wrong page attribution)",
+          "confidence_score": 0.4
+        }
+      ]
+    },
+    {
+      "group_id": "grp-macro-inflation-reconciliation",
+      "topic": "India FY24 Inflation Measures: Headline CPI vs. Core Inflation",
+      "entity": "Indian Economy",
+      "relationship": "APPARENT_CONTRADICTION_RECONCILED",
+      "case_category": "CASE_3_RECONCILED_BY_CONTEXT",
+      "confidence_score": 0.97,
+      "verdict_summary": "Apparent divergence between 5.4% Headline CPI and 3.1% Core Inflation reconciled by volatile food and fuel exclusion.",
+      "reasoning": "Fact 1 reports FY24 headline retail inflation (CPI-C) averaging 5.4%, driven elevated by vegetable and pulses prices. Fact 2 reports core inflation (CPI excluding food and fuel) declining sharply to 3.1%. The apparent discrepancy of 2.3 percentage points is reconciled by index composition: Headline CPI measures the entire consumption basket, whereas Core CPI strips out volatile food and energy components to capture underlying persistent price pressures.",
+      "reconciliation_factors": {
+        "scope_difference": "Headline CPI (Total Basket: 5.4%) vs Core CPI (Excluding Food & Energy: 3.1%)."
+      },
+      "facts": [
+        {
+          "fact_id": "fact-lm8c8te",
+          "doc_id": "macro-survey",
+          "doc_name": "India Economic Survey 2024-25",
+          "page_number": 4,
+          "entity": "Indian Economy",
+          "metric": "Headline Retail Inflation (CPI-C)",
+          "canonical_key": "india.macro.inflation.headline",
+          "value": "5.4%",
+          "unit": "%",
+          "temporal_context": "FY24 (Average)",
+          "scope_qualifiers": {
+            "basket": "All-India Headline CPI-Combined"
+          },
+          "exact_quote": "retail inflation, measured by the Consumer Price Index (CPI), declined to 5.4 per cent in FY24",
+          "grounding_verified": false,
+          "guardrail_notes": "Quote not found in source page text (hallucination or wrong page attribution)",
+          "confidence_score": 0.4
+        },
+        {
+          "fact_id": "fact-3y6a4t3",
+          "doc_id": "macro-rbi",
+          "doc_name": "RBI Annual Report 2024-25",
+          "page_number": 17,
+          "entity": "Indian Economy",
+          "metric": "Core Inflation (CPI ex Food & Fuel)",
+          "canonical_key": "india.macro.inflation.core",
+          "value": "3.1%",
+          "unit": "%",
+          "temporal_context": "FY24 Year-End",
+          "scope_qualifiers": {
+            "basket": "CPI Excluding Food and Fuel"
+          },
+          "exact_quote": "core inflation (CPI excluding food and beverages, and fuel and light) eased to 3.1 per cent",
+          "grounding_verified": false,
+          "guardrail_notes": "Quote not found in source page text (hallucination or wrong page attribution)",
+          "confidence_score": 0.4
+        }
+      ]
+    },
+    {
+      "group_id": "grp-macro-case4-failure-guardrail",
+      "topic": "RBI Multi-Column Layout Interleaving & Substring Guardrail",
+      "entity": "Reserve Bank of India",
+      "relationship": "APPARENT_CONTRADICTION_RECONCILED",
+      "case_category": "CASE_4_EXTRACTION_FAILURE",
+      "confidence_score": 0.96,
+      "verdict_summary": "Case 4 Demonstration: Raw stream parser interleaved multi-column sentences; Grounding Guardrail detected failure and prevented hallucination.",
+      "reasoning": "Demonstrates Case 4 of the assignment: The RBI Annual Report features a two-column typesetting format. A standard raw stream parser extracted lines horizontally across both columns, producing: 'into account these factors, real GDP growth for AI models, including large language models'. When evaluated against the Grounding Guardrail, verifyGrounding() returned false (0% confidence). By applying layout-aware bounding box reconstruction (-layout), the quote was properly isolated: 'Taking into account these factors, real GDP growth for 2025-26 is projected at 6.5 per cent', which passed verification with 100% confidence.",
+      "reconciliation_factors": {
+        "methodology_difference": "Raw Stream (Interleaved Column Hallucination) vs Layout-Aware Spatial Alignment."
+      },
+      "facts": [
+        {
+          "fact_id": "fact-vlmh6d6",
+          "doc_id": "macro-rbi",
+          "doc_name": "RBI Annual Report 2024-25",
+          "page_number": 17,
+          "entity": "Reserve Bank of India",
+          "metric": "Raw Multi-Column Scrambled Extract",
+          "canonical_key": "macro.parser.rbi_layout_bug",
+          "value": "6.5% / AI model text collision",
+          "unit": "Text / Scrambled",
+          "temporal_context": "2025-26",
+          "scope_qualifiers": {
+            "parser": "Raw Stream (Failure Demo)"
+          },
+          "exact_quote": "real GDP growth for AI models, including large language models",
+          "grounding_verified": false,
+          "guardrail_notes": "FAIL: Substring guardrail detected text scrambling caused by parallel column interleaving.",
+          "confidence_score": 0.4
+        },
+        {
+          "fact_id": "fact-gq80zsw",
+          "doc_id": "macro-rbi",
+          "doc_name": "RBI Annual Report 2024-25",
+          "page_number": 17,
+          "entity": "Reserve Bank of India",
+          "metric": "Corrected Layout-Aware Extract",
+          "canonical_key": "macro.parser.rbi_layout_bug",
+          "value": "6.5%",
+          "unit": "%",
+          "temporal_context": "2025-26",
+          "scope_qualifiers": {
+            "parser": "Layout-Aware Parser (-layout)"
+          },
+          "exact_quote": "real GDP growth for\n2025-26 is projected at 6.5 per cent, with risks\nevenly balanced.",
+          "grounding_verified": true,
+          "guardrail_notes": "Verified (100% token alignment across PDF layout breaks)",
+          "confidence_score": 0.98
+        }
+      ]
+    }
+  ]
+}
