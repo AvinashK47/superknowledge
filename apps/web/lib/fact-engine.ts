@@ -11,7 +11,7 @@ export function getGeminiModel() {
     throw new Error("GEMINI_API_KEY is not set in environment variables.");
   }
   const google = createGoogleGenerativeAI({ apiKey });
-  return google("gemini-3.6-flash");
+  return google("gemini-3.5-flash-lite");
 }
 
 export const RawFactItemSchema = z.object({

@@ -6,36 +6,44 @@ import { parsePDF, verifyGrounding } from "../apps/web/lib/pdf-parser";
 async function main() {
   console.log("Loading PDFs and verifying quotes for Starter Datasets...");
 
+  function getDatasetPath(relPath: string) {
+    const localPath = path.resolve("./starter-datasets", relPath);
+    if (fs.existsSync(localPath)) return localPath;
+    const downloadPath = path.resolve("/home/avinash/Downloads/starter-datasets", relPath);
+    if (fs.existsSync(downloadPath)) return downloadPath;
+    return localPath;
+  }
+
   // Parse Delhivery PDFs
   const ar24 = await parsePDF(
-    "/home/avinash/Downloads/starter-datasets/delhivery/02-delhivery-annual-report-fy24-excerpt.pdf",
+    getDatasetPath("delhivery/02-delhivery-annual-report-fy24-excerpt.pdf"),
     "delhivery-ar24",
     "Delhivery Annual Report FY24"
   );
   const pres24 = await parsePDF(
-    "/home/avinash/Downloads/starter-datasets/delhivery/03-delhivery-q4-fy24-earnings-presentation.pdf",
+    getDatasetPath("delhivery/03-delhivery-q4-fy24-earnings-presentation.pdf"),
     "delhivery-pres24",
     "Delhivery Q4 FY24 Earnings Presentation"
   );
   const prosp22 = await parsePDF(
-    "/home/avinash/Downloads/starter-datasets/delhivery/01-delhivery-prospectus-2022-excerpt.pdf",
+    getDatasetPath("delhivery/01-delhivery-prospectus-2022-excerpt.pdf"),
     "delhivery-prosp22",
     "Delhivery Prospectus 2022"
   );
 
   // Parse Macro PDFs
   const survey = await parsePDF(
-    "/home/avinash/Downloads/starter-datasets/india-macroeconomy/01-india-economic-survey-2024-25-excerpt.pdf",
+    getDatasetPath("india-macroeconomy/01-india-economic-survey-2024-25-excerpt.pdf"),
     "macro-survey",
     "India Economic Survey 2024-25"
   );
   const rbi = await parsePDF(
-    "/home/avinash/Downloads/starter-datasets/india-macroeconomy/02-rbi-annual-report-2024-25-excerpt.pdf",
+    getDatasetPath("india-macroeconomy/02-rbi-annual-report-2024-25-excerpt.pdf"),
     "macro-rbi",
     "RBI Annual Report 2024-25"
   );
   const imf = await parsePDF(
-    "/home/avinash/Downloads/starter-datasets/india-macroeconomy/03-imf-india-2025-article-iv-excerpt.pdf",
+    getDatasetPath("india-macroeconomy/03-imf-india-2025-article-iv-excerpt.pdf"),
     "macro-imf",
     "IMF India Article IV Consultation 2025"
   );
@@ -360,6 +368,62 @@ async function main() {
     ],
   };
 
+  // Group 7: Case 3 - Headcount Scope & Footnote Arithmetic Reconciliation
+  const delhiveryGroupHeadcount: ReconciledFactGroup = {
+    group_id: "grp-delhivery-headcount-reconciliation",
+    topic: "Delhivery Total Workforce Headcount & Partner Agent Arithmetic",
+    entity: "Delhivery Limited",
+    relationship: "APPARENT_CONTRADICTION_RECONCILED",
+    case_category: "CASE_3_RECONCILED_BY_CONTEXT",
+    confidence_score: 0.99,
+    verdict_summary:
+      "Reconciled with exact arithmetic proof (63,713 + 34,422 = 98,135): Annual Report's 98,135 workforce strength includes partner agents; Q4 presentation reports 63,713 core team and 34,422 partner agents.",
+    reasoning:
+      "Fact 1 from the Annual Report (Page 2) reports 'Workforce strength' as 98,135 as of March 31, 2024. Footnote 5 defines this as including permanent employees, contractual workers, AND last-mile delivery partner agents. Fact 2 from the Q4 Earnings Presentation (Page 8) reports 'Team size' as 63,713. Footnote 4 defines this as including permanent employees and contractual workers, EXCLUDING partner agents. Fact 3 from the exact same Q4 Presentation Key Operating Metrics table explicitly lists 'Partner agents' as 34,422 for Q4 FY24. Exact mathematical verification: 63,713 (core team) + 34,422 (partner agents) = 98,135 (total workforce strength). The apparent contradiction is 100% resolved down to the single person by cross-document footnote arithmetic.",
+    reconciliation_factors: {
+      scope_difference: "Total workforce strength (including partner agents) vs core team size (excluding partner agents).",
+      unit_difference: "Exact arithmetic reconciliation: 63,713 + 34,422 = 98,135 individuals.",
+    },
+    facts: [
+      createFact(
+        ar24,
+        2,
+        "Delhivery Limited",
+        "Total Workforce Strength (Including Partner Agents)",
+        "delhivery.headcount.fy24.total",
+        "98,135",
+        "Individuals",
+        "As of March 31, 2024",
+        { definition: "Includes permanent, contractual, and last-mile partner agents (Footnote 5)" },
+        "98,135"
+      ),
+      createFact(
+        pres24,
+        8,
+        "Delhivery Limited",
+        "Core Team Size (Excluding Partner Agents)",
+        "delhivery.headcount.fy24.core",
+        "63,713",
+        "Individuals",
+        "As of March 31, 2024 (Q4 FY24)",
+        { definition: "Permanent and contractual employees, excluding partner agents (Footnote 4)" },
+        "63,713"
+      ),
+      createFact(
+        pres24,
+        8,
+        "Delhivery Limited",
+        "Last-Mile Partner Agents",
+        "delhivery.headcount.fy24.partner_agents",
+        "34,422",
+        "Individuals",
+        "Q4 FY24",
+        { definition: "Count of last mile delivery partner agents in the last month of Q4 FY24 (Footnote 5)" },
+        "34,422"
+      ),
+    ],
+  };
+
   const delhiveryPayload = {
     summary: {
       dataset_id: "delhivery",
@@ -385,12 +449,12 @@ async function main() {
           file_size: "2.0 MB",
         },
       ],
-      total_facts: 14,
+      total_facts: 17,
       corroborated_count: 3,
       contradiction_count: 0,
-      reconciled_count: 2,
+      reconciled_count: 3,
       failure_count: 1,
-      verification_rate: 93.3,
+      verification_rate: 94.1,
     },
     groups: [
       delhiveryGroup1,
@@ -398,6 +462,7 @@ async function main() {
       delhiveryGroup3,
       delhiveryGroup4,
       delhiveryGroup5,
+      delhiveryGroupHeadcount,
       delhiveryGroup6,
     ],
   };
@@ -416,9 +481,9 @@ async function main() {
     confidence_score: 0.98,
     verdict_summary: "Genuine institutional forecasting contradiction: Ministry of Finance (6.4%) vs. RBI and IMF (6.5%) for identical fiscal period.",
     reasoning:
-      "Fact 1 from the Ministry of Finance's Economic Survey 2024-25 (Page 4) projects real GDP growth of 6.4 per cent for FY25 based on the first advance estimates of national accounts. Fact 2 from the Reserve Bank of India Annual Report 2024-25 (Page 17) projects real GDP growth for 2025-26 at 6.5 per cent with risks evenly balanced. Fact 3 from the IMF Article IV Consultation (Page 3) cites economic growth of 6.5 percent in FY2024/25. This constitutes a genuine contradiction between the central government's fiscal advisors (6.4%) and the monetary authority / multilateral lender (6.5%) reflecting differing econometric modeling inputs, agricultural yield expectations, and inflation trajectory assumptions.",
+      "Fact 1 from the Ministry of Finance's Economic Survey 2024-25 (Page 4) projects real GDP growth of 6.4 per cent for FY25 based on the first advance estimates of national accounts. Fact 2 from the Reserve Bank of India Annual Report 2024-25 (Pages 8 and 23) reports real GDP growth of 6.5 per cent for 2024-25 based on the second advance estimates. Fact 3 from the IMF Article IV Consultation (Pages 3 and 10) independently projects economic growth of 6.5 percent in FY2024/25. This constitutes a genuine contradiction between the central government's fiscal advisors (6.4%) and the monetary authority / multilateral lender (6.5%) reflecting differing econometric modeling inputs, agricultural yield expectations, and advance estimate vintages.",
     reconciliation_factors: {
-      methodology_difference: "First Advance Estimates (Govt) vs Monetary Policy Projections (RBI) & Multilateral Baseline (IMF).",
+      methodology_difference: "First Advance Estimates (Govt: 6.4%) vs Second Advance Estimates (RBI: 6.5%) & Multilateral Baseline (IMF: 6.5%).",
     },
     facts: [
       createFact(
@@ -435,15 +500,15 @@ async function main() {
       ),
       createFact(
         rbi,
-        17,
+        8,
         "Indian Economy",
-        "Real GDP Growth Projection",
+        "Real GDP Growth Rate (Second Advance Estimate)",
         "india.macro.gdp_growth.fy25",
         "6.5%",
         "%",
-        "2025-26 (FY25/26)",
-        { source: "Reserve Bank of India", basis: "Monetary Policy Baseline" },
-        "real GDP growth for\n2025-26 is projected at 6.5 per cent, with risks\nevenly balanced."
+        "2024-25 (FY25)",
+        { source: "Reserve Bank of India", basis: "Second Advance Estimates (SAE)" },
+        "real gross domestic product (GDP)\ngrowth moderated to 6.5 per cent in 2024-25,"
       ),
       createFact(
         imf,
@@ -625,18 +690,24 @@ async function main() {
     groups: [macroGroup1, macroGroup2, macroGroup3, macroGroup4],
   };
 
-  // Write files
+  // Write files to both apps/web/data and root data/
   const outDir = path.resolve("./apps/web/data");
-  fs.writeFileSync(
-    path.join(outDir, "starter-delhivery.json"),
-    JSON.stringify(delhiveryPayload, null, 2),
-    "utf-8"
-  );
-  fs.writeFileSync(
-    path.join(outDir, "starter-macroeconomy.json"),
-    JSON.stringify(macroPayload, null, 2),
-    "utf-8"
-  );
+  const rootDataDir = path.resolve("./data");
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.mkdirSync(rootDataDir, { recursive: true });
+
+  for (const dir of [outDir, rootDataDir]) {
+    fs.writeFileSync(
+      path.join(dir, "starter-delhivery.json"),
+      JSON.stringify(delhiveryPayload, null, 2),
+      "utf-8"
+    );
+    fs.writeFileSync(
+      path.join(dir, "starter-macroeconomy.json"),
+      JSON.stringify(macroPayload, null, 2),
+      "utf-8"
+    );
+  }
 
   console.log("Successfully generated and verified starter-delhivery.json and starter-macroeconomy.json!");
 }

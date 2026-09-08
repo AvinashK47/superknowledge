@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react";
-import { ReconciledFactGroup, CaseCategory } from "../lib/types";
+import { motion, AnimatePresence } from "framer-motion";
+import { ReconciledFactGroup, CaseCategory } from "@repo/shared";
 import { RelationshipBadge, CaseBadge, GroundingBadge } from "./Badge";
-import { Search, ChevronRight, FileText, Sparkles, Filter } from "lucide-react";
+import { Search, ChevronRight, FileText, X, ArrowUpRight } from "lucide-react";
 
 interface FactMatrixTableProps {
   groups: ReconciledFactGroup[];
@@ -43,108 +44,96 @@ export function FactMatrixTable({
     });
   }, [groups, selectedCase, searchQuery]);
 
+  const filterTabs = [
+    { id: "ALL", label: `All Cards (${groups.length})` },
+    { id: "CASE_1_CORROBORATION", label: "Case 1: Corroborated", dot: "bg-emerald-400" },
+    { id: "CASE_2_CONTRADICTION", label: "Case 2: Contradiction", dot: "bg-rose-400" },
+    { id: "CASE_3_RECONCILED_BY_CONTEXT", label: "Case 3: Reconciled", dot: "bg-amber-400" },
+    { id: "CASE_4_EXTRACTION_FAILURE", label: "Case 4: Guardrail Failure", dot: "bg-purple-400" },
+  ];
+
   return (
     <div className="space-y-4">
       {/* Search and Filters Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 p-2.5 rounded-2xl bg-[#0f1219] border border-white/[0.08]">
         {/* Search input */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search metrics, entities, values, or quotes..."
+            placeholder="Search metrics, entities, values, or source citations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950/60 border border-white/10 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
+            className="w-full pl-9 pr-8 py-2 rounded-xl bg-[#141822] border border-white/[0.06] text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-all font-sans"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
-        {/* Case Filter Tabs */}
-        <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 text-xs">
-          <button
-            onClick={() => setSelectedCase("ALL")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all shrink-0 ${
-              selectedCase === "ALL"
-                ? "bg-slate-800 text-white border border-white/10 shadow-sm"
-                : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
-            }`}
-          >
-            All ({groups.length})
-          </button>
-
-          <button
-            onClick={() => setSelectedCase("CASE_1_CORROBORATION")}
-            className={`px-2.5 py-1.5 rounded-lg font-medium transition-all shrink-0 flex items-center gap-1.5 ${
-              selectedCase === "CASE_1_CORROBORATION"
-                ? "bg-emerald-950/80 text-emerald-300 border border-emerald-500/30"
-                : "text-slate-400 hover:text-emerald-300 hover:bg-emerald-500/5"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            Case 1: Corroborated
-          </button>
-
-          <button
-            onClick={() => setSelectedCase("CASE_2_CONTRADICTION")}
-            className={`px-2.5 py-1.5 rounded-lg font-medium transition-all shrink-0 flex items-center gap-1.5 ${
-              selectedCase === "CASE_2_CONTRADICTION"
-                ? "bg-rose-950/80 text-rose-300 border border-rose-500/30"
-                : "text-slate-400 hover:text-rose-300 hover:bg-rose-500/5"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-rose-400" />
-            Case 2: Contradiction
-          </button>
-
-          <button
-            onClick={() => setSelectedCase("CASE_3_RECONCILED_BY_CONTEXT")}
-            className={`px-2.5 py-1.5 rounded-lg font-medium transition-all shrink-0 flex items-center gap-1.5 ${
-              selectedCase === "CASE_3_RECONCILED_BY_CONTEXT"
-                ? "bg-amber-950/80 text-amber-300 border border-amber-500/30"
-                : "text-slate-400 hover:text-amber-300 hover:bg-amber-500/5"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-amber-400" />
-            Case 3: Reconciled
-          </button>
-
-          <button
-            onClick={() => setSelectedCase("CASE_4_EXTRACTION_FAILURE")}
-            className={`px-2.5 py-1.5 rounded-lg font-medium transition-all shrink-0 flex items-center gap-1.5 ${
-              selectedCase === "CASE_4_EXTRACTION_FAILURE"
-                ? "bg-violet-950/80 text-violet-300 border border-violet-500/30"
-                : "text-slate-400 hover:text-violet-300 hover:bg-violet-500/5"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-violet-400" />
-            Case 4: Guardrail Failure
-          </button>
+        {/* Minimal Filter Tabs with Framer Motion Pill */}
+        <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
+          {filterTabs.map((tab) => {
+            const isActive = selectedCase === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedCase(tab.id)}
+                className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium whitespace-nowrap transition-colors ${
+                  isActive ? "text-white" : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeFilterTab"
+                    className="absolute inset-0 bg-white/[0.1] border border-white/[0.1] rounded-xl shadow-sm"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                {tab.dot && <span className={`w-1.5 h-1.5 rounded-full relative z-10 ${tab.dot}`} />}
+                <span className="relative z-10">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Cards List */}
-      <div className="space-y-3">
-        {filteredGroups.length === 0 ? (
-          <div className="p-12 text-center rounded-2xl glass-panel border border-white/5 bg-slate-900/40">
-            <Filter className="w-8 h-8 text-slate-500 mx-auto mb-3 opacity-50" />
-            <h3 className="text-sm font-semibold text-slate-300">No matching facts found</h3>
-            <p className="text-xs text-slate-500 mt-1">Try clearing your search query or switching case filters.</p>
-          </div>
-        ) : (
-          filteredGroups.map((group) => {
-            const isSelected = selectedGroup?.group_id === group.group_id;
+      {/* Zero State */}
+      {filteredGroups.length === 0 && (
+        <div className="p-12 text-center rounded-2xl bg-[#0f1219] border border-white/[0.08] space-y-2">
+          <p className="text-sm font-medium text-slate-300">No matching facts found</p>
+          <p className="text-xs text-slate-500">
+            Try adjusting your search query or switching the category filter.
+          </p>
+        </div>
+      )}
 
+      {/* Fact Cluster Cards List */}
+      <div className="space-y-3">
+        <AnimatePresence>
+          {filteredGroups.map((group, index) => {
+            const isSelected = selectedGroup?.group_id === group.group_id;
             return (
-              <div
+              <motion.div
                 key={group.group_id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.2, delay: index * 0.03 }}
+                whileHover={{ y: -2 }}
                 onClick={() => onSelectGroup(group)}
-                className={`p-4 sm:p-5 rounded-2xl cursor-pointer transition-all border ${
+                className={`group p-5 sm:p-6 rounded-2xl transition-all cursor-pointer border ${
                   isSelected
-                    ? "bg-slate-800/90 border-indigo-500/50 shadow-xl shadow-indigo-500/10 ring-1 ring-indigo-500/30"
-                    : "bg-slate-900/60 hover:bg-slate-800/60 border-white/5 hover:border-white/15"
+                    ? "bg-[#141926] border-cyan-500/50 shadow-lg shadow-cyan-500/5"
+                    : "bg-[#0f1219] border-white/[0.08] hover:border-white/20 hover:bg-[#121620]"
                 }`}
               >
-                {/* Card Top Row */}
+                {/* Card Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
                   <div className="flex items-center gap-2 flex-wrap">
                     <RelationshipBadge relationship={group.relationship} />
@@ -154,61 +143,73 @@ export function FactMatrixTable({
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-                    <span className="text-[11px] text-slate-500">
+                  <div className="flex items-center gap-2 self-end sm:self-auto">
+                    <span className="text-xs font-mono text-slate-400">
                       {Math.round(group.confidence_score * 100)}% Confidence
                     </span>
                     <span className="text-slate-600">•</span>
-                    <span className="text-[11px] text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                      Inspect Audit Trail <ChevronRight className="w-3.5 h-3.5" />
+                    <span className="flex items-center gap-1 text-xs font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors">
+                      <span>Inspect Audit Trail</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </span>
                   </div>
                 </div>
 
-                {/* Topic Title */}
-                <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                  {group.topic}
-                </h3>
+                {/* Card Title & Verdict */}
+                <div className="space-y-1 mb-4">
+                  <h3 className="text-base sm:text-lg font-bold text-white tracking-tight leading-snug group-hover:text-cyan-50 transition-colors">
+                    {group.topic}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    {group.verdict_summary}
+                  </p>
+                </div>
 
-                {/* Verdict Summary */}
-                <p className="mt-1 text-xs sm:text-sm text-slate-300 line-clamp-2">
-                  {group.verdict_summary}
-                </p>
-
-                {/* Fact Comparison Pills */}
-                <div className="mt-4 pt-3 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                  {group.facts.map((fact, idx) => (
+                {/* Multi-Document Claims Preview Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-3 border-t border-white/5">
+                  {group.facts.map((fact, fIdx) => (
                     <div
-                      key={fact.fact_id}
-                      className="p-2.5 rounded-xl bg-slate-950/60 border border-white/5 flex flex-col justify-between gap-1.5"
+                      key={fact.fact_id || fIdx}
+                      className="p-3.5 rounded-xl bg-[#141822] border border-white/[0.04] space-y-2"
                     >
-                      <div className="flex items-center justify-between gap-1.5 text-[11px]">
-                        <span className="font-semibold text-slate-300 truncate max-w-[140px]" title={fact.doc_name}>
-                          {fact.doc_name}
-                        </span>
-                        <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[10px]">
+                      <div className="flex items-center justify-between gap-1 text-[11px]">
+                        <div className="flex items-center gap-1.5 truncate max-w-[170px]" title={fact.doc_name}>
+                          <FileText className="w-3 h-3 text-cyan-400 shrink-0" />
+                          <span className="text-slate-300 truncate font-medium">
+                            {fact.doc_name}
+                          </span>
+                        </div>
+                        <span className="font-mono text-[10px] font-bold text-slate-400 bg-white/5 px-1.5 py-0.2 rounded shrink-0">
                           p. {fact.page_number}
                         </span>
                       </div>
 
-                      <div className="flex items-baseline justify-between gap-1 mt-0.5">
-                        <span className="text-sm font-bold text-white font-mono">{fact.value}</span>
-                        <span className="text-[10px] text-slate-400 truncate">{fact.temporal_context}</span>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-base font-bold font-mono text-white">
+                          {fact.value}
+                        </span>
+                        {fact.temporal_context && (
+                          <span className="text-[10px] font-mono text-slate-500 truncate">
+                            {fact.temporal_context}
+                          </span>
+                        )}
                       </div>
 
-                      <div className="flex items-center justify-between mt-1 pt-1.5 border-t border-white/5">
-                        <GroundingBadge verified={fact.grounding_verified} note={fact.guardrail_notes} />
-                        <span className="text-[10px] text-slate-500 truncate max-w-[90px]">
-                          {fact.unit}
-                        </span>
+                      <div className="flex items-center justify-between text-[10px]">
+                        <GroundingBadge verified={fact.grounding_verified} />
+                        {fact.unit && (
+                          <span className="font-mono text-slate-400">
+                            {fact.unit}
+                          </span>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             );
-          })
-        )}
+          })}
+        </AnimatePresence>
       </div>
     </div>
   );

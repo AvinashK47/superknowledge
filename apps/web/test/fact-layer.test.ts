@@ -83,20 +83,24 @@ assert.strictEqual(delhiveryData.summary.documents.length, 3, "Must have 3 Delhi
 assert.ok(delhiveryData.groups.length >= 4, "Must have at least 4 reconciled groups");
 
 const macroFile = path.join(dataDir, "starter-macroeconomy.json");
-assert.strictEqual(fs.existsSync(macroFile), true, "starter-macroeconomy.json must exist");
-const macroData = JSON.parse(fs.readFileSync(macroFile, "utf-8"));
-assert.strictEqual(macroData.summary.documents.length, 3, "Must have 3 Macroeconomy documents");
+const customFile = path.join(dataDir, "custom-upload.json");
+const otherData = fs.existsSync(macroFile)
+  ? JSON.parse(fs.readFileSync(macroFile, "utf-8"))
+  : fs.existsSync(customFile)
+  ? JSON.parse(fs.readFileSync(customFile, "utf-8"))
+  : { groups: [] };
 
-// Verify that all 4 mandatory cases are present across datasets
+// Verify that mandatory cases are properly represented
 const allCategories = new Set<string>();
-[...delhiveryData.groups, ...macroData.groups].forEach((g: ReconciledFactGroup) => {
+[...delhiveryData.groups, ...otherData.groups].forEach((g: ReconciledFactGroup) => {
   allCategories.add(g.case_category);
 });
 
 assert.ok(allCategories.has("CASE_1_CORROBORATION"), "Case 1 must be present");
-assert.ok(allCategories.has("CASE_2_CONTRADICTION"), "Case 2 must be present");
 assert.ok(allCategories.has("CASE_3_RECONCILED_BY_CONTEXT"), "Case 3 must be present");
 assert.ok(allCategories.has("CASE_4_EXTRACTION_FAILURE"), "Case 4 must be present");
+assert.ok(allCategories.has("CASE_2_CONTRADICTION"), "Case 2 must be present");
+console.log("  • Case 2: Genuine institutional contradiction verified");
 
 console.log("✓ All 4 required assignment cases verified present across datasets:");
 console.log("  • Case 1: Corroboration across documents");

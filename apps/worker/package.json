@@ -2,12 +2,28 @@
   "name": "worker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "worker.ts",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx worker.ts",
+    "start": "tsx worker.ts",
+    "check-types": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "dependencies": {
+    "@repo/shared": "workspace:*",
+    "@ai-sdk/google": "^4.0.64",
+    "@types/pdf-parse": "^1.1.5",
+    "ai": "^7.0.93",
+    "pdf-parse": "^2.4.5",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.19",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
 }

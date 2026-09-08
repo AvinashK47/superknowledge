@@ -38,3 +38,9 @@ yarn-error.log*
 *.pem
 /*.png
 !apps/web/public/screenshots/*.png
+
+# Runtime staging & dynamic session caches
+uploads/*
+!uploads/.gitkeep
+data/custom-upload.json
+apps/web/data/custom-upload.json

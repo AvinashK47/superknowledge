@@ -39,13 +39,13 @@
       "case_category": "CASE_2_CONTRADICTION",
       "confidence_score": 0.98,
       "verdict_summary": "Genuine institutional forecasting contradiction: Ministry of Finance (6.4%) vs. RBI and IMF (6.5%) for identical fiscal period.",
-      "reasoning": "Fact 1 from the Ministry of Finance's Economic Survey 2024-25 (Page 4) projects real GDP growth of 6.4 per cent for FY25 based on the first advance estimates of national accounts. Fact 2 from the Reserve Bank of India Annual Report 2024-25 (Page 17) projects real GDP growth for 2025-26 at 6.5 per cent with risks evenly balanced. Fact 3 from the IMF Article IV Consultation (Page 3) cites economic growth of 6.5 percent in FY2024/25. This constitutes a genuine contradiction between the central government's fiscal advisors (6.4%) and the monetary authority / multilateral lender (6.5%) reflecting differing econometric modeling inputs, agricultural yield expectations, and inflation trajectory assumptions.",
+      "reasoning": "Fact 1 from the Ministry of Finance's Economic Survey 2024-25 (Page 4) projects real GDP growth of 6.4 per cent for FY25 based on the first advance estimates of national accounts. Fact 2 from the Reserve Bank of India Annual Report 2024-25 (Pages 8 and 23) reports real GDP growth of 6.5 per cent for 2024-25 based on the second advance estimates. Fact 3 from the IMF Article IV Consultation (Pages 3 and 10) independently projects economic growth of 6.5 percent in FY2024/25. This constitutes a genuine contradiction between the central government's fiscal advisors (6.4%) and the monetary authority / multilateral lender (6.5%) reflecting differing econometric modeling inputs, agricultural yield expectations, and advance estimate vintages.",
       "reconciliation_factors": {
-        "methodology_difference": "First Advance Estimates (Govt) vs Monetary Policy Projections (RBI) & Multilateral Baseline (IMF)."
+        "methodology_difference": "First Advance Estimates (Govt: 6.4%) vs Second Advance Estimates (RBI: 6.5%) & Multilateral Baseline (IMF: 6.5%)."
       },
       "facts": [
         {
-          "fact_id": "fact-qtyw9hs",
+          "fact_id": "fact-0xrok2x",
           "doc_id": "macro-survey",
           "doc_name": "India Economic Survey 2024-25",
           "page_number": 4,
@@ -64,27 +64,27 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-17lw2if",
+          "fact_id": "fact-wjzu8t3",
           "doc_id": "macro-rbi",
           "doc_name": "RBI Annual Report 2024-25",
-          "page_number": 17,
+          "page_number": 8,
           "entity": "Indian Economy",
-          "metric": "Real GDP Growth Projection",
+          "metric": "Real GDP Growth Rate (Second Advance Estimate)",
           "canonical_key": "india.macro.gdp_growth.fy25",
           "value": "6.5%",
           "unit": "%",
-          "temporal_context": "2025-26 (FY25/26)",
+          "temporal_context": "2024-25 (FY25)",
           "scope_qualifiers": {
             "source": "Reserve Bank of India",
-            "basis": "Monetary Policy Baseline"
+            "basis": "Second Advance Estimates (SAE)"
           },
-          "exact_quote": "real GDP growth for\n2025-26 is projected at 6.5 per cent, with risks\nevenly balanced.",
+          "exact_quote": "real gross domestic product (GDP)\ngrowth moderated to 6.5 per cent in 2024-25,",
           "grounding_verified": true,
           "guardrail_notes": "Verified (100% token alignment across PDF layout breaks)",
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-nyluion",
+          "fact_id": "fact-g0t4uns",
           "doc_id": "macro-imf",
           "doc_name": "IMF India Article IV Consultation 2025",
           "page_number": 3,
@@ -118,7 +118,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-w63co7h",
+          "fact_id": "fact-2iv44hq",
           "doc_id": "macro-survey",
           "doc_name": "India Economic Survey 2024-25",
           "page_number": 4,
@@ -137,7 +137,7 @@
           "confidence_score": 0.4
         },
         {
-          "fact_id": "fact-2yoc7b7",
+          "fact_id": "fact-nxcitbn",
           "doc_id": "macro-imf",
           "doc_name": "IMF India Article IV Consultation 2025",
           "page_number": 3,
@@ -171,7 +171,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-lm8c8te",
+          "fact_id": "fact-agy3dsc",
           "doc_id": "macro-survey",
           "doc_name": "India Economic Survey 2024-25",
           "page_number": 4,
@@ -190,7 +190,7 @@
           "confidence_score": 0.4
         },
         {
-          "fact_id": "fact-3y6a4t3",
+          "fact_id": "fact-bbicem4",
           "doc_id": "macro-rbi",
           "doc_name": "RBI Annual Report 2024-25",
           "page_number": 17,
@@ -224,7 +224,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-vlmh6d6",
+          "fact_id": "fact-7uczdby",
           "doc_id": "macro-rbi",
           "doc_name": "RBI Annual Report 2024-25",
           "page_number": 17,
@@ -243,7 +243,7 @@
           "confidence_score": 0.4
         },
         {
-          "fact_id": "fact-gq80zsw",
+          "fact_id": "fact-18y1zhl",
           "doc_id": "macro-rbi",
           "doc_name": "RBI Annual Report 2024-25",
           "page_number": 17,

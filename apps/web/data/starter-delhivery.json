@@ -23,12 +23,12 @@
         "file_size": "2.0 MB"
       }
     ],
-    "total_facts": 14,
+    "total_facts": 17,
     "corroborated_count": 3,
     "contradiction_count": 0,
-    "reconciled_count": 2,
+    "reconciled_count": 3,
     "failure_count": 1,
-    "verification_rate": 93.3
+    "verification_rate": 94.1
   },
   "groups": [
     {
@@ -46,7 +46,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-y37ma51",
+          "fact_id": "fact-w49jqd1",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 22,
@@ -66,7 +66,7 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-dreo6kd",
+          "fact_id": "fact-rlf1450",
           "doc_id": "delhivery-pres24",
           "doc_name": "Delhivery Q4 FY24 Earnings Presentation",
           "page_number": 6,
@@ -85,7 +85,7 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-4aq6h9c",
+          "fact_id": "fact-wvfft4k",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 36,
@@ -120,7 +120,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-bwtsv3z",
+          "fact_id": "fact-cgv0lsk",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 22,
@@ -140,7 +140,7 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-rttnwnc",
+          "fact_id": "fact-6w3a54b",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 22,
@@ -175,7 +175,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-loowyvg",
+          "fact_id": "fact-7l5fy0q",
           "doc_id": "delhivery-prosp22",
           "doc_name": "Delhivery Prospectus 2022",
           "page_number": 44,
@@ -194,7 +194,7 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-y7cznen",
+          "fact_id": "fact-deqii1n",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 2,
@@ -213,7 +213,7 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-h1r85ob",
+          "fact_id": "fact-vegts0u",
           "doc_id": "delhivery-pres24",
           "doc_name": "Delhivery Q4 FY24 Earnings Presentation",
           "page_number": 8,
@@ -247,7 +247,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-ycdkcg2",
+          "fact_id": "fact-4htwh6l",
           "doc_id": "delhivery-pres24",
           "doc_name": "Delhivery Q4 FY24 Earnings Presentation",
           "page_number": 5,
@@ -265,7 +265,7 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-ulsczaw",
+          "fact_id": "fact-kqupd00",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 2,
@@ -299,7 +299,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-1ubd5sl",
+          "fact_id": "fact-aenrt1h",
           "doc_id": "delhivery-prosp22",
           "doc_name": "Delhivery Prospectus 2022",
           "page_number": 30,
@@ -317,7 +317,7 @@
           "confidence_score": 0.98
         },
         {
-          "fact_id": "fact-h0crtx0",
+          "fact_id": "fact-llg99tz",
           "doc_id": "delhivery-prosp22",
           "doc_name": "Delhivery Prospectus 2022",
           "page_number": 30,
@@ -337,6 +337,76 @@
       ]
     },
     {
+      "group_id": "grp-delhivery-headcount-reconciliation",
+      "topic": "Delhivery Total Workforce Headcount & Partner Agent Arithmetic",
+      "entity": "Delhivery Limited",
+      "relationship": "APPARENT_CONTRADICTION_RECONCILED",
+      "case_category": "CASE_3_RECONCILED_BY_CONTEXT",
+      "confidence_score": 0.99,
+      "verdict_summary": "Reconciled with exact arithmetic proof (63,713 + 34,422 = 98,135): Annual Report's 98,135 workforce strength includes partner agents; Q4 presentation reports 63,713 core team and 34,422 partner agents.",
+      "reasoning": "Fact 1 from the Annual Report (Page 2) reports 'Workforce strength' as 98,135 as of March 31, 2024. Footnote 5 defines this as including permanent employees, contractual workers, AND last-mile delivery partner agents. Fact 2 from the Q4 Earnings Presentation (Page 8) reports 'Team size' as 63,713. Footnote 4 defines this as including permanent employees and contractual workers, EXCLUDING partner agents. Fact 3 from the exact same Q4 Presentation Key Operating Metrics table explicitly lists 'Partner agents' as 34,422 for Q4 FY24. Exact mathematical verification: 63,713 (core team) + 34,422 (partner agents) = 98,135 (total workforce strength). The apparent contradiction is 100% resolved down to the single person by cross-document footnote arithmetic.",
+      "reconciliation_factors": {
+        "scope_difference": "Total workforce strength (including partner agents) vs core team size (excluding partner agents).",
+        "unit_difference": "Exact arithmetic reconciliation: 63,713 + 34,422 = 98,135 individuals."
+      },
+      "facts": [
+        {
+          "fact_id": "fact-w15turw",
+          "doc_id": "delhivery-ar24",
+          "doc_name": "Delhivery Annual Report FY24",
+          "page_number": 2,
+          "entity": "Delhivery Limited",
+          "metric": "Total Workforce Strength (Including Partner Agents)",
+          "canonical_key": "delhivery.headcount.fy24.total",
+          "value": "98,135",
+          "unit": "Individuals",
+          "temporal_context": "As of March 31, 2024",
+          "scope_qualifiers": {
+            "definition": "Includes permanent, contractual, and last-mile partner agents (Footnote 5)"
+          },
+          "exact_quote": "98,135",
+          "grounding_verified": true,
+          "confidence_score": 0.98
+        },
+        {
+          "fact_id": "fact-luntral",
+          "doc_id": "delhivery-pres24",
+          "doc_name": "Delhivery Q4 FY24 Earnings Presentation",
+          "page_number": 8,
+          "entity": "Delhivery Limited",
+          "metric": "Core Team Size (Excluding Partner Agents)",
+          "canonical_key": "delhivery.headcount.fy24.core",
+          "value": "63,713",
+          "unit": "Individuals",
+          "temporal_context": "As of March 31, 2024 (Q4 FY24)",
+          "scope_qualifiers": {
+            "definition": "Permanent and contractual employees, excluding partner agents (Footnote 4)"
+          },
+          "exact_quote": "63,713",
+          "grounding_verified": true,
+          "confidence_score": 0.98
+        },
+        {
+          "fact_id": "fact-ed9d48h",
+          "doc_id": "delhivery-pres24",
+          "doc_name": "Delhivery Q4 FY24 Earnings Presentation",
+          "page_number": 8,
+          "entity": "Delhivery Limited",
+          "metric": "Last-Mile Partner Agents",
+          "canonical_key": "delhivery.headcount.fy24.partner_agents",
+          "value": "34,422",
+          "unit": "Individuals",
+          "temporal_context": "Q4 FY24",
+          "scope_qualifiers": {
+            "definition": "Count of last mile delivery partner agents in the last month of Q4 FY24 (Footnote 5)"
+          },
+          "exact_quote": "34,422",
+          "grounding_verified": true,
+          "confidence_score": 0.98
+        }
+      ]
+    },
+    {
       "group_id": "grp-delhivery-extraction-failure-guardrail",
       "topic": "Multi-Column PDF OCR Collision & Substring Verification Guardrail",
       "entity": "Delhivery Limited",
@@ -350,7 +420,7 @@
       },
       "facts": [
         {
-          "fact_id": "fact-t6oyrva",
+          "fact_id": "fact-zkyo98k",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 22,
@@ -369,7 +439,7 @@
           "confidence_score": 0.4
         },
         {
-          "fact_id": "fact-2uj87d3",
+          "fact_id": "fact-566hlfd",
           "doc_id": "delhivery-ar24",
           "doc_name": "Delhivery Annual Report FY24",
           "page_number": 22,
