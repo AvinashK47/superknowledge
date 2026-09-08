@@ -4,8 +4,8 @@ module.exports = {
   apps: [
     {
       name: "superknowledge-api",
-      script: "./apps/backend/server.ts",
-      interpreter: "tsx",
+      script: path.join(__dirname, "node_modules/.bin/tsx"),
+      args: "apps/backend/server.ts",
       cwd: __dirname,
       env: {
         NODE_ENV: "production",
@@ -16,8 +16,8 @@ module.exports = {
     },
     {
       name: "superknowledge-worker",
-      script: "./apps/worker/worker.ts",
-      interpreter: "tsx",
+      script: path.join(__dirname, "node_modules/.bin/tsx"),
+      args: "apps/worker/worker.ts",
       cwd: __dirname,
       env: {
         NODE_ENV: "production",
@@ -27,7 +27,7 @@ module.exports = {
     },
     {
       name: "superknowledge-web",
-      script: "node_modules/next/dist/bin/next",
+      script: path.join(__dirname, "node_modules/next/dist/bin/next"),
       args: "start -p 3001",
       cwd: path.join(__dirname, "apps/web"),
       env: {
