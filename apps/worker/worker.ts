@@ -998,6 +998,15 @@ console.log(`SuperKnowledge Background Worker Active`);
 console.log(`Watching for queued jobs in data/jobs.json...`);
 console.log(`=========================================`);
 
+// Clean up interrupted jobs on startup
+const bootJobs = getJobs();
+for (const [id, job] of Object.entries(bootJobs)) {
+  if (job.status === "processing") {
+    console.log(`[Worker] Interrupted job ${id} found during startup; resetting to queued...`);
+    updateJob(id, { status: "queued", progress: 0, step: "Re-queued after worker restart" });
+  }
+}
+
 async function pollJobs() {
   const jobs = getJobs();
   const queuedJob = Object.values(jobs).find((j) => j.status === "queued");
