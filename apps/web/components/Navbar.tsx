@@ -39,7 +39,7 @@ export function Navbar({
   selectedModel: propModel,
   onSelectModel,
 }: NavbarProps) {
-  const [backendStatus, setBackendStatus] = useState<{ ok: boolean; latencyMs?: number }>({ ok: false });
+  const [backendStatus, setBackendStatus] = useState<{ ok: boolean; port?: number; latencyMs?: number }>({ ok: false });
   const [localModel, setLocalModel] = useState("gemini-3.5-flash-lite");
   const selectedModel = propModel || localModel;
   const handleSetModel = (m: string) => {
@@ -51,7 +51,7 @@ export function Navbar({
   useEffect(() => {
     async function ping() {
       const res = await checkBackendHealth();
-      setBackendStatus({ ok: res.ok, latencyMs: res.latencyMs });
+      setBackendStatus({ ok: res.ok, port: res.port, latencyMs: res.latencyMs });
     }
     ping();
     const interval = setInterval(ping, 5000);
@@ -118,12 +118,12 @@ export function Navbar({
               borderColor: backendStatus.ok ? "rgba(16, 185, 129, 0.2)" : "rgba(244, 63, 94, 0.2)",
               color: backendStatus.ok ? "#34d399" : "#fb7185",
             }}
-            title={backendStatus.ok ? `Express API :8000 live (${backendStatus.latencyMs}ms)` : "Backend server disconnected"}
+            title={backendStatus.ok ? `Express API :${backendStatus.port || 8000} live (${backendStatus.latencyMs}ms)` : "Backend server disconnected"}
           >
             <span
               className={`w-1.5 h-1.5 rounded-full ${backendStatus.ok ? "bg-emerald-400 animate-pulse" : "bg-rose-400"}`}
             />
-            <span>{backendStatus.ok ? `API :8000` : "Offline"}</span>
+            <span>{backendStatus.ok ? `API :${backendStatus.port || 8000}` : "Offline"}</span>
           </div>
 
           {/* Export PDF Report Button (When Data Active) */}

@@ -15,7 +15,8 @@ import {
 } from "@repo/shared";
 
 // Paths
-const DATA_DIR = path.resolve("../../data");
+const ROOT_DIR = path.resolve(__dirname, "../..");
+const DATA_DIR = path.join(ROOT_DIR, "data");
 const JOBS_FILE = path.join(DATA_DIR, "jobs.json");
 
 // Ensure data dir
@@ -26,7 +27,7 @@ function getGeminiModel(modelName?: string) {
   let apiKey = process.env.GEMINI_API_KEY || "";
   if (!apiKey) {
     // Try reading root or local .env
-    const rootEnv = path.resolve("../../.env");
+    const rootEnv = path.join(ROOT_DIR, ".env");
     if (fs.existsSync(rootEnv)) {
       const text = fs.readFileSync(rootEnv, "utf-8");
       for (const line of text.split("\n")) {

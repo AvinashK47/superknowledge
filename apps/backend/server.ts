@@ -8,15 +8,16 @@ import { execSync } from "child_process";
 import { IngestJob, DatasetSummary, ReconciledFactGroup } from "@repo/shared";
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 
 app.use(cors());
 app.use(express.json());
 
 // Paths
-const DATA_DIR = path.resolve("../../data");
-const UPLOADS_DIR = path.resolve("../../uploads");
-const STARTER_DIR = path.resolve("../../starter-datasets");
+const ROOT_DIR = path.resolve(__dirname, "../..");
+const DATA_DIR = path.join(ROOT_DIR, "data");
+const UPLOADS_DIR = path.join(ROOT_DIR, "uploads");
+const STARTER_DIR = path.join(ROOT_DIR, "starter-datasets");
 const JOBS_FILE = path.join(DATA_DIR, "jobs.json");
 
 // Ensure directories exist
@@ -168,7 +169,7 @@ app.post("/api/upload", upload.array("files"), (req: Request, res: Response) => 
 app.post("/api/sample/process", (req: Request, res: Response) => {
   const { sampleId, model } = req.body;
   const targetFolder = sampleId === "macroeconomy" ? "india-macroeconomy" : "delhivery";
-  const sourceDir = path.resolve(`../../starter-datasets/${targetFolder}`);
+  const sourceDir = path.join(STARTER_DIR, targetFolder);
 
   if (!fs.existsSync(sourceDir)) {
     return res.status(404).json({ error: `Sample dataset folder not found: ${sourceDir}` });

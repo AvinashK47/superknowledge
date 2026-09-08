@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReconciledFactGroup, ExtractedFact } from "@repo/shared";
+import { getBackendBaseUrl } from "../lib/api-client";
 import { RelationshipBadge, CaseBadge, GroundingBadge } from "./Badge";
 import {
   X,
@@ -72,7 +73,7 @@ export function EvidenceDrawer({ group, onClose }: EvidenceDrawerProps) {
   };
 
   const getProvenanceViewUrl = (fact: ExtractedFact, factIndex: number) => {
-    const backendUrl = "http://localhost:8000";
+    const backendUrl = getBackendBaseUrl();
     const filename = getDocFilename(fact.doc_name);
     const params = new URLSearchParams({
       doc: filename,
@@ -88,7 +89,7 @@ export function EvidenceDrawer({ group, onClose }: EvidenceDrawerProps) {
   };
 
   const getRawPdfUrl = (fact: ExtractedFact) => {
-    const backendUrl = "http://localhost:8000";
+    const backendUrl = getBackendBaseUrl();
     const filename = getDocFilename(fact.doc_name);
     return `${backendUrl}/api/documents/raw/${encodeURIComponent(filename)}#page=${fact.page_number}`;
   };

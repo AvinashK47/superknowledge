@@ -1,7 +1,19 @@
 import axios from "axios";
 import { DatasetSummary, ReconciledFactGroup, IngestJob } from "@repo/shared";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+export function getBackendBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_BACKEND_URL !== undefined) {
+    return process.env.NEXT_PUBLIC_BACKEND_URL;
+  }
+  if (typeof window !== "undefined") {
+    if (!window.location.port || window.location.port === "80" || window.location.port === "443") {
+      return "";
+    }
+  }
+  return "http://localhost:8000";
+}
+
+const BACKEND_URL = getBackendBaseUrl();
 
 // Axios client configured for backend API
 const api = axios.create({
