@@ -1,0 +1,73 @@
+name: Deploy SuperKnowledge to Oracle VM
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into Oracle VM and Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST || '92.4.84.114' }}
+          username: ${{ secrets.USERNAME || 'ubuntu' }}
+          key: ${{ secrets.SSH_KEY }}
+          timeout: 10m
+          script: |
+            set -e
+            echo "==> Deploying SuperKnowledge to Oracle Cloud VM..."
+            cd ~/superknowledge
+
+            # 1. Fetch and pull latest main branch
+            echo "==> Pulling latest changes from origin/main..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            # 2. Update .env variables if GitHub secrets provided
+            touch .env
+            update_env_var() {
+              local key=$1
+              local val=$2
+              if [ -n "$val" ]; then
+                grep -v "^${key}=" .env > .env.tmp || true
+                mv .env.tmp .env
+                echo "${key}=${val}" >> .env
+              fi
+            }
+
+            update_env_var "PORT" "8001"
+            update_env_var "GEMINI_API_KEY" "${{ secrets.GEMINI_API_KEY }}"
+
+            # 3. Prepare web production environment
+            cp .env apps/web/.env.production
+            echo 'PORT=3001' >> apps/web/.env.production
+            echo 'NEXT_PUBLIC_BACKEND_URL=""' >> apps/web/.env.production
+            cp apps/web/.env.production apps/web/.env.local
+
+            # 4. Install dependencies
+            echo "==> Installing monorepo dependencies..."
+            pnpm install
+
+            # 5. Build Next.js Web application
+            echo "==> Building Next.js web application..."
+            rm -f apps/web/.next/lock || true
+            pnpm --filter web build
+
+            # 6. Gracefully reload/restart PM2 services
+            echo "==> Restarting PM2 services..."
+            pm2 restart ecosystem.config.cjs || pm2 start ecosystem.config.cjs
+            pm2 save
+
+            # 7. Health Check
+            echo "==> Validating deployment health..."
+            sleep 3
+            curl -f http://127.0.0.1:8001/api/health || (echo "API Health Check Failed!" && exit 1)
+
+            echo "==================================================="
+            echo "✓ SuperKnowledge Deployed Successfully to Oracle VM!"
+            echo "==================================================="
