@@ -370,5 +370,25 @@ pnpm --filter web test
 
 ---
 
+## 🌐 Live Cloud Deployment & CI/CD
+
+SuperKnowledge is continuously deployed on an **Oracle Cloud Infrastructure (OCI) ARM64 Ubuntu 24.04 VM**:
+
+- **Live URL**: [http://92.4.84.114/](http://92.4.84.114/) (or [http://superknowledge.avinashk47.me/](http://superknowledge.avinashk47.me/))
+- **Live Health Endpoint**: [http://92.4.84.114/api/health](http://92.4.84.114/api/health)
+- **Deployment Strategy**:
+  - **Nginx Reverse Proxy**: Public port `80` routing `/` to Next.js (`:3001`) and `/api/` to Express API (`:8001`).
+  - **PM2 Daemon Management**: Keeps Next.js (`superknowledge-web`), Express (`superknowledge-api`), and the background worker (`superknowledge-worker`) running continuously with auto-restart on crashes.
+  - **Native OCR/PDF Parser**: `poppler-utils` (`pdftotext -layout`) running natively on ARM64 Linux.
+
+### Continuous Deployment via GitHub Actions
+Every `git push` to `main` triggers `.github/workflows/deploy.yml`:
+1. Authenticates via encrypted SSH key (`appleboy/ssh-action`).
+2. Pulls the latest commit with `git reset --hard origin/main`.
+3. Synchronizes environment variables and builds the Next.js production bundle.
+4. Performs a graceful PM2 reload and executes an automated curl health check.
+
+---
+
 ## ⚖️ License
 MIT License. Developed for the Superjoin VIT 2026 Engineering Intern Evaluation.
