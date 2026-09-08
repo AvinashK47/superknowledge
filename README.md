@@ -374,10 +374,10 @@ pnpm --filter web test
 
 SuperKnowledge is continuously deployed on an **Oracle Cloud Infrastructure (OCI) ARM64 Ubuntu 24.04 VM**:
 
-- **Live URL**: [http://92.4.84.114/](http://92.4.84.114/) (or [http://superknowledge.avinashk47.me/](http://superknowledge.avinashk47.me/))
-- **Live Health Endpoint**: [http://92.4.84.114/api/health](http://92.4.84.114/api/health)
+- **Live Production URL (HTTPS)**: [https://superknowledge.avinashk47.me/](https://superknowledge.avinashk47.me/)
+- **Live Health Endpoint**: [https://superknowledge.avinashk47.me/api/health](https://superknowledge.avinashk47.me/api/health)
 - **Deployment Strategy**:
-  - **Nginx Reverse Proxy**: Public port `80` routing `/` to Next.js (`:3001`) and `/api/` to Express API (`:8001`).
+  - **Nginx Reverse Proxy & SSL**: Routes HTTPS (`:443`) to Next.js (`:3001`) and `/api/` to Express API (`:8001`) with Let's Encrypt TLS. Direct IP requests (`http://92.4.84.114/`) 301-redirect to HTTPS.
   - **PM2 Daemon Management**: Keeps Next.js (`superknowledge-web`), Express (`superknowledge-api`), and the background worker (`superknowledge-worker`) running continuously with auto-restart on crashes.
   - **Native OCR/PDF Parser**: `poppler-utils` (`pdftotext -layout`) running natively on ARM64 Linux.
 
