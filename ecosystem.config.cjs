@@ -6,6 +6,7 @@ module.exports = {
       name: "superknowledge-api",
       script: "apps/backend/server.ts",
       cwd: __dirname,
+      interpreter: "node",
       node_args: "--import=tsx",
       env: {
         NODE_ENV: "production",
@@ -17,6 +18,7 @@ module.exports = {
       name: "superknowledge-worker",
       script: "apps/worker/worker.ts",
       cwd: __dirname,
+      interpreter: "node",
       node_args: "--import=tsx",
       env: {
         NODE_ENV: "production",
@@ -28,6 +30,7 @@ module.exports = {
       script: "node_modules/next/dist/bin/next",
       args: "start -p 3001",
       cwd: path.join(__dirname, "apps/web"),
+      interpreter: "node",
       env: {
         NODE_ENV: "production",
         PORT: 3001,

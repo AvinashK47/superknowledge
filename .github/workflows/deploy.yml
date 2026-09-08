@@ -59,8 +59,9 @@ jobs:
             pnpm --filter web build
 
             # 6. Gracefully reload/restart PM2 services
-            echo "==> Restarting PM2 services..."
-            pm2 restart ecosystem.config.cjs || pm2 start ecosystem.config.cjs
+            echo "==> Starting PM2 services..."
+            pm2 delete superknowledge-api superknowledge-worker superknowledge-web 2>/dev/null || true
+            pm2 start ecosystem.config.cjs
             pm2 save
 
             # 7. Health Check

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { IngestJob } from "@repo/shared";
 import { getJobStatus } from "../lib/api-client";
-import { Loader2, CheckCircle2, AlertCircle, Cpu } from "lucide-react";
+import { Loader2, CheckCircle2, AlertCircle, Cpu, X } from "lucide-react";
 
 interface JobProgressBannerProps {
   jobId: string | null;
   onJobFinished: () => void;
+  onDismiss?: () => void;
 }
 
-export function JobProgressBanner({ jobId, onJobFinished }: JobProgressBannerProps) {
+export function JobProgressBanner({ jobId, onJobFinished, onDismiss }: JobProgressBannerProps) {
   const [job, setJob] = useState<IngestJob | null>(null);
 
   useEffect(() => {
@@ -18,12 +19,14 @@ export function JobProgressBanner({ jobId, onJobFinished }: JobProgressBannerPro
     }
 
     let active = true;
+    let errCount = 0;
 
     async function poll() {
       if (!jobId || !active) return;
       try {
         const data = await getJobStatus(jobId);
         if (active) {
+          errCount = 0;
           setJob(data);
           if (data.status === "completed") {
             setTimeout(() => {
@@ -36,7 +39,24 @@ export function JobProgressBanner({ jobId, onJobFinished }: JobProgressBannerPro
           }
         }
       } catch (err) {
-        console.warn("Error polling job status:", err);
+        errCount++;
+        console.warn(`Error polling job status (${errCount}/3):`, err);
+        if (active && errCount >= 3) {
+          // If server restarted or job 404s, fail gracefully and allow dismissal
+          setJob((prev) => ({
+            id: jobId,
+            dataset_id: "custom",
+            status: "failed",
+            progress: prev?.progress || 0,
+            step: "Job was interrupted or no longer active on the server.",
+            error: "Process was interrupted or not found. Dismiss to view existing analysis or re-run.",
+            total_files: 0,
+            processed_files: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          }));
+          return;
+        }
       }
 
       if (active) {
@@ -52,6 +72,14 @@ export function JobProgressBanner({ jobId, onJobFinished }: JobProgressBannerPro
   }, [jobId, onJobFinished]);
 
   if (!job) return null;
+
+  const handleClose = () => {
+    if (onDismiss) {
+      onDismiss();
+    } else {
+      onJobFinished();
+    }
+  };
 
   return (
     <div className={`p-4 rounded-2xl border backdrop-blur-md shadow-xl animate-in fade-in slide-in-from-top-3 duration-200 ${
@@ -84,7 +112,7 @@ export function JobProgressBanner({ jobId, onJobFinished }: JobProgressBannerPro
                 {job.status === "completed"
                   ? "Reconciliation Complete"
                   : job.status === "failed"
-                  ? "Processing Failed"
+                  ? "Processing Interrupted"
                   : "Background Worker Active"}
               </span>
               <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-indigo-500/20 text-indigo-300">
@@ -95,11 +123,21 @@ export function JobProgressBanner({ jobId, onJobFinished }: JobProgressBannerPro
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-auto text-xs font-mono text-indigo-300">
-          {job.status !== "failed" && job.status !== "completed" && (
-            <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400" />
-          )}
-          <span>{job.progress}% Complete</span>
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          <div className="flex items-center gap-2 text-xs font-mono text-indigo-300">
+            {job.status !== "failed" && job.status !== "completed" && (
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400" />
+            )}
+            <span>{job.progress}% Complete</span>
+          </div>
+
+          <button
+            onClick={handleClose}
+            title="Dismiss progress banner"
+            className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
@@ -118,7 +156,15 @@ export function JobProgressBanner({ jobId, onJobFinished }: JobProgressBannerPro
       </div>
 
       {job.error && (
-        <p className="mt-2 text-xs text-rose-400 font-medium">Error: {job.error}</p>
+        <div className="mt-2.5 flex items-center justify-between text-xs text-rose-400 font-medium">
+          <p>Error: {job.error}</p>
+          <button
+            onClick={handleClose}
+            className="text-xs underline text-rose-300 hover:text-white ml-2 shrink-0"
+          >
+            Dismiss
+          </button>
+        </div>
       )}
     </div>
   );

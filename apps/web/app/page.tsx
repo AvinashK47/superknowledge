@@ -189,7 +189,15 @@ export default function Home() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              <JobProgressBanner jobId={activeJobId} onJobFinished={handleJobFinished} />
+              <JobProgressBanner
+                jobId={activeJobId}
+                onJobFinished={handleJobFinished}
+                onDismiss={() => {
+                  setActiveJobId(null);
+                  setIsProcessing(false);
+                  loadDataset("custom");
+                }}
+              />
             </motion.div>
           )}
         </AnimatePresence>
