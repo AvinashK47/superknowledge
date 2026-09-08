@@ -158,7 +158,7 @@ export function exportAnalysisPdfReport({
   // Separate groups by category
   const contradictions = groups.filter((g) => g.case_category === "CASE_2_CONTRADICTION" || g.relationship === "GENUINE_CONTRADICTION");
   const reconciliations = groups.filter((g) => g.case_category === "CASE_3_RECONCILED_BY_CONTEXT" || g.relationship === "APPARENT_CONTRADICTION_RECONCILED");
-  const corroborations = groups.filter((g) => g.case_category === "CASE_1_CORROBORATED" || g.relationship === "CORROBORATED");
+  const corroborations = groups.filter((g) => g.case_category === "CASE_1_CORROBORATION" || g.relationship === "CORROBORATED");
 
   // Helper to render Audit Rationale & Disambiguation Factors
   function renderAuditRationaleBox(
