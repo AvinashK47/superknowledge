@@ -1,119 +1,92 @@
-# 3-Minute Demo Video Script & Complete Walkthrough Guide
+# SuperKnowledge — 2-to-3 Minute Demo Video Script
 
-> **Assignment**: Superjoin Engineering Intern Task — Fact Knowledge Layer  
-> **Presenter**: Avinash Kushwaha (B.Tech CSE - AI & ML)  
-> **Target Duration**: Exactly 2 minutes 50 seconds (under the 3-minute hard ceiling)
-
----
-
-## 🎬 Recording Setup & Tab Preparation
-
-Have the following browser tabs ready in your browser window:
-- **Tab 1**: `http://localhost:3000` (SuperKnowledge Dashboard — on the **Raw Workspace Canvas**, model set to **Flash Lite**).
-- **Tab 2**: `README.md` or `ARCHITECTURE_AND_WORKFLOW.md` (scrolled to the **System Architecture & 5-Pass Pipeline** diagrams).
-- **Terminal (Optional in split view)**: Showing `pnpm dev` running cleanly with worker daemon logs.
+> **Presenter**: Avinash Kushwaha  
+> **Target Length**: ~2 minutes 15 seconds (comfortable, natural pace under 3 minutes)  
+> **Live Site**: `https://superknowledge.avinashk47.me` (or `http://localhost:3000`)
 
 ---
 
-## ⏱️ Turn-by-Turn Video Script with Exact Timestamps
+## ⚡ Quick Teleprompter / Cheat Sheet (At a Glance)
+
+1. **[00:00 - 00:25] Intro & Problem**: Introduce yourself & SuperKnowledge. Explain why naive RAG fails on financial PDFs (units, scopes, conflicting numbers).
+2. **[00:25 - 00:55] Architecture & Live Ingestion**: Monorepo + background worker + Gemini Flash Lite. Trigger live analysis from scratch (no frozen UI).
+3. **[00:55 - 01:45] The 3 Core Reconciliation Cases**:
+   - **Case 1 (Corroborated)**: Multi-doc agreement with automatic unit conversion.
+   - **Case 2 (Contradiction)**: Genuine institutional conflicts flagged honestly.
+   - **Case 3 (Reconciled by Context)**: Scopes disambiguated (e.g. rounded vs. exact figures).
+4. **[01:45 - 02:15] Audit Trail & Verbatim Guardrail**: Open drawer, show exact page quotes & step-by-step auditor rationale. Non-AI substring check prevents hallucinations.
+5. **[02:15 - 02:30] PDF Export & Conclusion**: 1-click compliance export, live VM deployment, wrap up.
 
 ---
 
-### [00:00 – 00:25] The Problem & The Mission
-**On-Screen**: Tab 1 (`http://localhost:3000/`) — SuperKnowledge Raw Workspace canvas.
-
-**Spoken Script**:
-> "Hi everyone, I'm Avinash Kushwaha. Today I'm presenting **SuperKnowledge** — an audit-grade Fact Knowledge Layer built for the Superjoin engineering assignment.
-> 
-> Real-world financial and macroeconomic PDFs are notoriously noisy. Multiple official filings often make seemingly contradictory statements about the exact same company or economy. Standard vector RAG fails here because it retrieves isolated text chunks without understanding accounting perimeters, mathematical units, or temporal context.
-> 
-> SuperKnowledge turns unstructured PDFs into a verified, provenance-anchored fact layer."
+## 🎬 Full Spoken Script (Word-for-Word)
 
 ---
 
-### [00:25 – 00:55] Architecture & 5-Pass Pipeline Deep Dive
-**On-Screen**: Switch to Tab 2 (`README.md` or `ARCHITECTURE_AND_WORKFLOW.md`), showing the **Mermaid Architecture & Pipeline diagrams**. Hover over the layers as you speak.
+### Part 1: Problem & Mission (00:00 – 00:25)
+**On Screen**: Dashboard at `https://superknowledge.avinashk47.me` (or `localhost:3000`).
 
-**Spoken Script**:
-> "Let's look at our architecture and workflow:
+**What to Say**:
+> "Hi everyone, I'm Avinash Kushwaha. Today I'm presenting **SuperKnowledge** — an audit-grade Fact Knowledge Layer built for Superjoin.
 > 
-> I built this as a decoupled **Turborepo Monorepo** with four dedicated workspaces:
-> 1. **`apps/web`**: A forensic Next.js 16 UI on port 3000.
-> 2. **`apps/backend`**: A stateless Express 5 REST gateway on port 8000.
-> 3. **`apps/worker`**: An autonomous background compute daemon watching our persistent job queue.
-> 4. **`packages/shared`**: A single source of truth for TypeScript types and Zod schemas.
+> When analyzing corporate filings and macroeconomic reports, standard vector RAG fails. Different documents often cite conflicting numbers for the exact same metric because of differing reporting periods, accounting units, or entity scopes.
 > 
-> Our **5-Pass Processing Pipeline** operates in distinct stages:
-> First, `pdftotext -layout` extracts physical page text preserving spatial columns without text interleaving.
-> Second, **Gemini 3.5 Flash Lite** extracts structured claims with strict Zod schemas in 8-to-12 page high-density chunks.
-> Third, our **Deterministic Non-AI Guardrail** verifies exact quotes against physical page text.
-> Fourth, a **4-Pass Hierarchical Clustering** engine groups related metrics by canonical keys and metric families.
-> Finally, our **Reconciliation Arbiter** evaluates mathematical and contextual relationships."
+> SuperKnowledge ingests messy, multi-page PDFs and turns them into a verified, cross-reconciled fact layer."
 
 ---
 
-### [00:55 – 01:25] Live Ingestion & Flash Lite in Action
-**On-Screen**: Switch back to Tab 1 (`http://localhost:3000/`). Click **"Analyze India Macro Live from Scratch"** (or Delhivery). The animated `JobProgressBanner` appears showing real-time step updates and percentage.
+### Part 2: Architecture & Live Processing (00:25 – 00:55)
+**On Screen**: Show the raw workspace or trigger live analysis (e.g., Delhivery or India Macro dataset). Show the live progress banner updating.
 
-**Spoken Script**:
-> "Notice that our application starts completely raw — there is zero pre-baked cache. When I click *'Analyze India Macro Live from Scratch'*, the Express API enqueues a background job.
+**What to Say**:
+> "I built this as a **Turborepo monorepo** with Next.js on the frontend, an Express API gateway, and a dedicated background worker daemon. 
 > 
-> Our worker processes 3 institutional reports totaling nearly 300 pages.
-> I chose **Gemini 3.5 Flash Lite** as our universal default. Flash Lite slashes full extraction time to **under 40 seconds** while completely preventing free-tier 429 rate limit errors.
+> When an analysis runs, compute is offloaded entirely to the worker so the UI stays completely responsive.
 > 
-> As you can see on the live banner, it processes each document, runs our deterministic quote guardrail, clusters 88 facts across documents, and completes in real time!"
+> We use **Gemini 3.5 Flash Lite** for high-speed, structured extraction, processing over 100 pages across 3 documents in under 75 seconds. The worker extracts atomic facts, normalizes units, and clusters related claims across documents."
 
 ---
 
-### [01:25 – 02:05] The 4 Mandatory Cases & Non-AI Guardrail
-**On-Screen**: Banner reaches 100%. The dashboard hydrates showing 88 facts, Case 1, Case 2, Case 3, and 97%+ Guardrail provenance.
-Click **"Case 2: Contradiction"** filter tab, then click into **"India: Real GDP Growth Rate"**.
+### Part 3: The 3 Reconciliation Cases (00:55 – 01:45)
+**On Screen**: Point to the summary cards (Corroborated, Contradictions, Reconciled). Click the filter buttons to show each case.
 
-**Spoken Script**:
-> "Here are our four evaluation cases:
+**What to Say**:
+> "Once processed, the engine categorizes findings into 3 core reconciliation cases:
 > 
-> **Case 2: Genuine Contradiction**: The Economic Survey reports India's FY25 Real GDP growth at **6.4%** based on First Advance Estimates. However, both the RBI and IMF report **6.5%** for the identical period. Our engine identifies this as an unreconciled institutional divergence and flags it explicitly rather than hallucinating consensus.
+> **First, Case 1: Corroboration**. When multiple documents agree — even across different units like Crores versus Millions — our engine mathematically normalizes them and marks them verified.
 > 
-> **Case 1: Multi-Document Corroboration**: When figures align across different accounting formats — such as Delhivery's ₹81,415 Million versus ₹8,142 Crores — our engine applies mathematical unit normalization ($1\text{ Cr} = 10\text{ M}$) to verify multi-document agreement.
+> **Second, Case 2: Genuine Contradiction**. For example, in the Delhivery reports, PTL freight tonnage is cited as 1.4 million tons on page 6, but 1,579 thousand tons on page 9. SuperKnowledge explicitly flags this institutional discrepancy instead of guessing.
 > 
-> Most importantly, every claim is vetted by our **Deterministic Non-AI Guardrail**. We do not rely on an LLM-as-judge. Instead, an algorithmic substring match checks whether the quote literally exists on the reported page. If a quote is hallucinated or scrambled by OCR, it is assigned 0.0 confidence and rejected as a **Case 4 Guardrail Failure**."
+> **Third, Case 3: Reconciled by Context**. Often, apparent conflicts are simply differences in precision or definition. For instance, Delhivery's active customer count is reported as *greater than 33,200* in the annual report, and *33,278* in the investor presentation. Our engine recognizes that one is a rounded figure and the other is exact, reconciling them with high confidence."
 
 ---
 
-### [02:05 – 02:35] Case 3 Contextual Reconciliation & Audit Workbench
-**On-Screen**: Click **"Case 3: Reconciled"** filter tab. Open **"India: Inflation Measures"** (or Deficit / Delhivery Headcount).
-Toggle **"View Auditor Rationale"** to show the Step-by-Step Audit Rationale and Disambiguation Factors.
-Click **"Open Quote in New Tab"** on Fact 1 to show the interactive HTML Provenance Viewer highlighting the quote in yellow on the PDF page.
+### Part 4: Audit Trail & Non-AI Guardrail (01:45 – 02:15)
+**On Screen**: Click **"Inspect Audit Trail"** on a card. The side-by-side drawer opens showing the verbatim quotes and auditor rationale.
 
-**Spoken Script**:
-> "Now let's examine **Case 3: Apparent Contradiction Reconciled by Context**.
+**What to Say**:
+> "Opening the **Audit Workbench**, you see full transparency. Both source documents are displayed side-by-side with physical page numbers, verbatim source quotes, and our step-by-step auditor rationale.
 > 
-> In the RBI report, Headline CPI is cited at **4.6%**, Core Inflation at **3.5%**, Food at **6.7%**, and Fuel at **-2.5%**. To a naive system, these look like massive contradictions.
-> 
-> But opening our **Audit Workbench**, our engine's **Step-by-Step Audit Rationale** explains the exact resolution: Core Inflation explicitly excludes food and fuel, proving that these four figures represent the granular components of the headline rate.
-> 
-> We see the exact same power with Delhivery's headcount: **98,135** total workforce strength versus **63,713** team size, which our engine reconciles with mathematical proof: $63,713\text{ core} + 34,422\text{ partner agents} = 98,135$.
-> 
-> Clicking *'Open Quote in New Tab'* opens our deep provenance viewer, pinning the exact verbatim quote with spatial visual highlighting."
+> Crucially, our **Deterministic Non-AI Guardrail** verifies every single quote with an exact algorithmic substring search against the raw PDF text. We don't use an LLM to judge an LLM — if a quote is hallucinated, it is immediately rejected with zero confidence."
 
 ---
 
-### [02:35 – 02:50] Vector PDF Audit Export & Closing
-**On-Screen**: Close drawer. Click **"Export PDF Report"** in the top navbar. A new tab opens instantly showing the 4-page vector PDF report with executive telemetry, conflict tables, and audit rationales.
+### Part 5: PDF Export & Wrap-up (02:15 – 02:30)
+**On Screen**: Click **"Export PDF Report"** in the top navbar. Show the generated vector audit report.
 
-**Spoken Script**:
-> "Finally, enterprise compliance requires portable, immutable proof. Clicking **'Export PDF'** generates a client-side vector PDF report complete with executive telemetry, source document verification tables, and full Step-by-Step Audit Rationales.
+**What to Say**:
+> "For enterprise audit and compliance, clicking **'Export PDF'** generates an immutable vector report with all evidence tables and rationale.
 > 
-> SuperKnowledge turns complex, contradictory PDFs into a deterministic, audit-grade Fact Knowledge Layer. Thank you!"
+> The system is deployed live on an Oracle Cloud VM at `superknowledge.avinashk47.me` with automated GitHub Actions CI/CD.
+> 
+> SuperKnowledge bridges the gap between raw document chaos and audit-ready truth. Thank you!"
 
 ---
 
-## 🎯 High-Impact Talking Points & Evaluator Q&A
+## 💡 Practical Recording Tips
 
-| Question / Topic | Key 1-Sentence Answer to Deliver |
-| :--- | :--- |
-| **Why not just use ChatGPT or LangChain RAG?** | "Vector RAG retrieves semantic chunks but cannot normalize units ($1\text{ Cr} = 10\text{ M}$), cannot detect accounting perimeter differences (Standalone vs. Consolidated), and cannot guarantee verbatim grounding." |
-| **Why a non-AI guardrail?** | "Using an LLM to verify an LLM is circular reasoning. An algorithmic substring match against the PDF's physical text layer provides 100% mathematical certainty against hallucination." |
-| **Why Gemini 3.5 Flash Lite?** | "It delivers sub-40-second end-to-end processing across 300 pages with structured Zod outputs and completely eliminates free-tier 429 rate limit errors." |
-| **Why a decoupled monorepo?** | "Heavy PDF layout extraction and clustering take 30-40 seconds. Isolating compute in a background worker daemon prevents UI thread blocking and HTTP timeouts." |
-| **How do you handle multi-column PDFs?** | "`pdftotext -layout` computes spatial bounding boxes, preserving whitespace formatting so column 1 text doesn't bleed across into column 2." |
+- **Keep It Moving**: Don't pause between clicks — click the filters as you mention each case.
+- **Tone**: Speak calmly, confidently, and conversationally. You don't need to recite long numbers; just focus on *why* the engine works.
+- **Tab Layout**:
+  - Keep the live dashboard on one tab.
+  - If you want to show code or architecture for 5 seconds, switch to the repo or `ARCHITECTURE_AND_WORKFLOW.md` during Part 2.
