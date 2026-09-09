@@ -11,7 +11,7 @@ SuperKnowledge is an audit-grade **Fact Knowledge Layer** built as a decoupled *
 ## 📹 Video Demo
 
 - **YouTube Walkthrough**: [https://youtu.be/XQlessHXcFU](https://youtu.be/XQlessHXcFU)  
-*(A 2.5-minute end-to-end engineering demonstration showing live document processing, verbatim provenance guardrails, and all four required reconciliation cases.)*
+*(A 7-minute end-to-end engineering demonstration showing live document processing, verbatim provenance guardrails, and all four required reconciliation cases.)*
 
 ---
 
